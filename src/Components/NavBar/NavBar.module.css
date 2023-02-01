@@ -72,6 +72,12 @@ form button {
     margin-right: 6px;
     transition: 0.3s;
 }
+.svg3 {
+    transform: scale(0.55);
+    fill: #CCCCCC;
+    padding-top: 3px;
+    transition: 0.3s;
+}
 
 .githubdiv {
     gap: 18px;

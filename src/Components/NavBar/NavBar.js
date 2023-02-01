@@ -1,12 +1,12 @@
-import React from "react";
-import styles from "./NavBar.module.css";
-import { ReactComponent as Logo } from "../../logo.svg";
-import { ReactComponent as Browse } from "../../Resources/image/browse.svg";
-import { ReactComponent as Cart } from "../../Resources/image/cart.svg";
-import { ReactComponent as GitHub } from "../../Resources/image/github.svg";
-import { ReactComponent as Search } from "../../Resources/image/search.svg";
-import { motion } from "framer-motion";
-import { useLocation, useNavigate } from "react-router-dom";
+import React from 'react';
+import styles from './NavBar.module.css';
+import { ReactComponent as Logo } from '../../logo.svg';
+import { ReactComponent as Browse } from '../../Resources/image/browse.svg';
+import { ReactComponent as Cart } from '../../Resources/image/cart.svg';
+import { ReactComponent as GitHub } from '../../Resources/image/github.svg';
+import { ReactComponent as Search } from '../../Resources/image/search.svg';
+import { motion } from 'framer-motion';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const NavBar = (props) => {
   const {
@@ -21,7 +21,7 @@ const NavBar = (props) => {
     handleSearch,
     handleSearchSubmit,
     handleOpenCart,
-    handleCloseCart
+    handleCloseCart,
   } = props;
 
   const variants = {
@@ -40,40 +40,40 @@ const NavBar = (props) => {
     <>
       <motion.div
         className={styles.navbar}
-        animate="visible"
-        initial={landingPage ? "hidden" : "visible"}
+        animate='visible'
+        initial={landingPage ? 'hidden' : 'visible'}
         variants={variants}
-        transition={{ y: { type: "spring", duration: 0.01 } }}
+        transition={{ y: { type: 'spring', duration: 0.01 } }}
       >
         <div className={styles.navbar_left}>
           <div
             className={styles.logodiv}
-            id="0"
+            id='0'
             onMouseEnter={handleHover}
             onMouseLeave={handleHover}
             onClick={handleHome}
           >
-            <Logo className={styles.svg} style={{ fill: "#FFF" }} />
+            <Logo className={styles.svg} style={{ fill: '#FFF' }} />
           </div>
 
           <div
             className={styles.pathdiv}
-            id="1"
+            id='1'
             onMouseEnter={handleHover}
             onMouseLeave={handleHover}
           >
             {browsing ? (
               <>
                 <motion.div
-                  animate="visible"
+                  animate='visible'
                   initial={
-                    location.pathname === "/game-store/browse"
-                      ? "hidden"
-                      : "visible"
+                    location.pathname === '/game-store/browse'
+                      ? 'hidden'
+                      : 'visible'
                   }
                   variants={searchVariants}
                   transition={{
-                    opacity: { type: "spring" },
+                    opacity: { type: 'spring' },
                     duration: 0.01,
                     delay: 0.25,
                   }}
@@ -81,21 +81,21 @@ const NavBar = (props) => {
                 >
                   <form onSubmit={handleSearchSubmit}>
                     <input
-                      placeholder="Search games..."
+                      placeholder='Search games...'
                       value={search}
                       onChange={handleSearch}
                     ></input>
-                    <input type="submit" hidden className={styles.submit} />
-                    <button type="submit">
+                    <input type='submit' hidden className={styles.submit} />
+                    <button type='submit'>
                       <Search
-                        className={styles.svg}
+                        className={styles.svg3}
                         style={{
-                          fill: hoverState[7].hovered ? "#FFF" : "#cccccc",
+                          fill: hoverState[7].hovered ? '#FFF' : '#cccccc',
                         }}
                         onMouseEnter={handleHover}
                         onMouseLeave={handleHover}
-                        id="7"
-                        aria-label="Search"
+                        id='7'
+                        aria-label='Search'
                       />
                     </button>
                   </form>
@@ -111,7 +111,7 @@ const NavBar = (props) => {
         <div className={styles.navbar_right}>
           <div
             className={styles.githubdiv}
-            id="2"
+            id='2'
             onMouseEnter={handleHover}
             onMouseLeave={handleHover}
           >
@@ -120,7 +120,7 @@ const NavBar = (props) => {
           </div>
           <div
             className={styles.cartdiv}
-            id="3"
+            id='3'
             onMouseEnter={handleHover}
             onMouseLeave={handleHover}
             onClick={handleOpenCart}
@@ -129,9 +129,9 @@ const NavBar = (props) => {
               onClick={handleOpenCart}
               className={styles.svg2}
               style={{
-                fill: cartAmount ? "#90ee90" : "transparent",
-                stroke: cartAmount ? "" : "#fff",
-                strokeWidth: "34px",
+                fill: cartAmount ? '#90ee90' : 'transparent',
+                stroke: cartAmount ? '' : '#fff',
+                strokeWidth: '34px',
               }}
             />
             <h3 onClick={handleOpenCart}>Cart: {cartAmount}</h3>
