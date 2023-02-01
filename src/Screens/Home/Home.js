@@ -1,13 +1,13 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import games from '../../utils/games';
 import styles from './Home.module.css';
-import { motion, AnimatePresence, m } from 'framer-motion';
+import { motion } from 'framer-motion';
 import NavBar from '../../Components/NavBar/NavBar';
 import { ReactComponent as GitHubLogo } from '../../Resources/image/githublogo.svg';
 import { ReactComponent as Enter } from '../../Resources/image/enter.svg';
 import { ReactComponent as Dice } from '../../Resources/image/dice.svg';
-import { ReactComponent as LinkedIn } from '../../Resources/image/linkedin.svg';
 import { ReactComponent as Game } from '../../Resources/image/game.svg';
 import { ReactComponent as NotFound } from '../../Resources/image/notfound.svg';
 import { ReactComponent as NotFoundQuery } from '../../Resources/image/notfoundquery.svg';
@@ -34,7 +34,7 @@ const Home = (props) => {
   } = props;
 
   const [browsing, setBrowsing] = React.useState(false);
-  const [landingPage, setLandingPage] = React.useState(true);
+  const [landingPage] = React.useState(true);
 
   const navigate = useNavigate();
 
@@ -79,12 +79,6 @@ const Home = (props) => {
 
   const handleNavNotFoundQuery = () => {
     navigate('/games/404');
-  };
-
-  const variants = {
-    hidden: { opacity: 1, x: -150 },
-    visible: { opacity: 1, x: 0 },
-    exit: { opacity: 0, x: 150 },
   };
 
   const buttonVariants = {
@@ -178,13 +172,21 @@ const Home = (props) => {
                 <Dice className={styles.ctaSVG} />
                 Play Dice
               </button>
-              <a href='https://github.com/byocao/game-store' target='_blank'>
+              <a
+                href='https://github.com/byocao/game-store'
+                target='_blank'
+                rel='noreferrer'
+              >
                 <button className={styles.cta} aria-label='View Repository'>
                   <GitHubLogo className={styles.ctaSVG} />
                   GitHub
                 </button>
               </a>
-              <a href='https://www.facebook.com/byo.cao/' target='_blank'>
+              <a
+                href='https://www.facebook.com/byo.cao/'
+                target='_blank'
+                rel='noreferrer'
+              >
                 <button
                   className={`${styles.cta} ${styles.lastChild}`}
                   aria-label='Open Facebook'

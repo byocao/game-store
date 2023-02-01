@@ -5,6 +5,7 @@ import React from 'react';
 import Home from './Screens/Home/Home';
 import games from './utils/games';
 import Browse from './Screens/Browse/Browse';
+import filterNames from './utils/filterNames';
 
 function App() {
   const navigate = useNavigate();
@@ -124,6 +125,8 @@ function App() {
   const [search, setSearch] = React.useState('');
   const [searching, setSearching] = React.useState(false);
   const [currentFilter, setCurrentFilter] = React.useState('none');
+  const [shownGames, setShownGames] = React.useState(allGames);
+  const [reviewDisplay, setReviewDisplay] = React.useState(false);
 
   async function handleBrowse() {
     setExtended(false);
@@ -247,6 +250,50 @@ function App() {
     }
   };
 
+  const handleSelect = (e) => {
+    setCurrentFilter(filterNames[e.target.id - 8]);
+  };
+
+  const handleLike = (e) => {
+    let handledLike = allGames.map((game, i) => {
+      if (e.target.id == i) {
+        game.isLiked = !game.isLiked;
+        return game;
+      } else {
+        return game;
+      }
+    });
+    setAllGames(handledLike);
+  };
+
+  const handleHoverGame = (e) => {
+    let handledHoveredGame = allGames.map((game, i) => {
+      if (e.target.id == i) {
+        game.isHovered = !game.isHovered;
+        return game;
+      } else {
+        return game;
+      }
+    });
+
+    setAllGames(handledHoveredGame);
+  };
+
+  const handleSelectGame = (e) => {
+    if (e.target.tagName === 'BUTTON') {
+      return;
+    } else if (e.target.classList[0] != 'AddToCart_addToCart__zbJPe') {
+      setSelectedGame(games[e.target.parentNode.id]);
+      navigate(`/games/${games[e.target.parentNode.id].surname}`);
+    }
+  };
+
+  const clearFilter = () => {
+    setCurrentFilter('none');
+    setSearch('');
+    setReviewDisplay(false);
+  };
+
   React.useEffect(() => {
     setOverlap(false);
 
@@ -291,23 +338,35 @@ function App() {
           path='/browse'
           element={
             <Browse
+              handleHover={handleHover}
+              handleSelect={handleSelect}
+              hoverState={hoverState}
+              currentFilter={currentFilter}
+              shownGames={shownGames}
+              setShownGames={setShownGames}
+              clearFilter={clearFilter}
+              setReviewDisplay={setReviewDisplay}
+              reviewDisplay={reviewDisplay}
+              allGames={allGames}
+              handleLike={handleLike}
+              handleHoverGame={handleHoverGame}
               cart={cart}
               cartAmount={cartAmount}
-              cartDisplayed={cartDisplayed}
+              handleAddToCart={handleAddToCart}
+              handleSelectGame={handleSelectGame}
+              handleSearch={handleSearch}
+              handleSearchSubmit={handleSearchSubmit}
+              search={search}
               handleOpenCart={handleOpenCart}
               handleCloseCart={handleCloseCart}
+              cartDisplayed={cartDisplayed}
               clearCart={clearCart}
               handleRemoveFromCart={handleRemoveFromCart}
               openGamePage={openGamePage}
-              handleHover={handleHover}
-              hoverState={hoverState}
               handleBrowse={handleBrowse}
               handleHome={handleHome}
               browsing={browsing}
-              search={search}
               searching={searching}
-              handleSearch={handleSearch}
-              handleSearchSubmit={handleSearchSubmit}
             />
           }
         />
