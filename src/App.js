@@ -6,6 +6,7 @@ import Home from './Screens/Home/Home';
 import games from './utils/games';
 import Browse from './Screens/Browse/Browse';
 import filterNames from './utils/filterNames';
+import GameDetail from './Screens/GameDetail/GameDetail';
 
 function App() {
   const navigate = useNavigate();
@@ -370,6 +371,7 @@ function App() {
             />
           }
         />
+        <Route path='/game/:gameId' element={<GameDetail />} />
       </Routes>
     </AnimatePresence>
   );
