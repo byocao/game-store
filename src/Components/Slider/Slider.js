@@ -1,30 +1,33 @@
 import styles from './Slider.module.css';
-import React from 'react';
-import { ReactComponent as Left } from '../../Resources/image/left.svg';
-import { ReactComponent as Right } from '../../Resources/image/right.svg';
+import React, { useEffect, useState } from 'react';
+import { motion, AnimatePresence } from "framer-motion";
+import { ReactComponent as Left } from "../../Resources/image/left.svg";
+import { ReactComponent as Right } from "../../Resources/image/right.svg";
+import { ReactComponent as Dot } from "../../Resources/image/dot.svg";
 import { useLocation } from 'react-router-dom';
-import 'react-slideshow-image/dist/styles.css';
-import { Slide } from 'react-slideshow-image';
+import "react-slideshow-image/dist/styles.css";
+import { Slide } from "react-slideshow-image";
 import templateGame from '../../utils/templateGame';
 
-const Slider = (props) => {
+const Slider = props => {
   const {
     selectedGame,
     setSelectedGame,
     allGames,
+    incrementCarousel,
+    decrementCarousel,
     carouselState,
     setCarouselState,
     hoverState,
-    handleHover,
+    handleHover
   } = props;
 
+  const [footageIndex, setFootageIndex] = useState(0);
   const slideRef = React.createRef();
   const location = useLocation();
 
-  React.useEffect(() => {
-    const selectedGameIndex = allGames.findIndex(
-      (game) => '/games/' + game.surname === location.pathname
-    );
+  useEffect(() => {
+    const selectedGameIndex = allGames.findIndex(game => "/games/" + game.surname === location.pathname);
     setSelectedGame(allGames[selectedGameIndex]);
   }, []);
 
@@ -34,7 +37,7 @@ const Slider = (props) => {
     transitionDuration: 800,
     arrows: false,
     infinite: true,
-    easing: 'ease',
+    easing: "ease"
   };
 
   const slideImages = [
@@ -48,8 +51,8 @@ const Slider = (props) => {
     templateGame.footage[0],
     templateGame.footage[1],
     templateGame.footage[2],
-    templateGame.footage[3],
-  ];
+    templateGame.footage[3]
+  ]
 
   const back = () => {
     if (carouselState > 0) {
@@ -58,7 +61,7 @@ const Slider = (props) => {
       setCarouselState(3);
     }
     slideRef.current.goBack();
-  };
+  }
 
   const next = () => {
     if (carouselState < 3) {
@@ -67,92 +70,100 @@ const Slider = (props) => {
       setCarouselState(0);
     }
     slideRef.current.goNext();
-  };
+  }
 
   const jumpToIndex = (e) => {
     let index = parseInt(e.target.id);
     setCarouselState(index);
-    slideRef.current.goto(index);
-  };
+    slideRef.current.goTo(index);
+  }
 
   return (
-    <div className={styles.slider}>
-      <Slide ref={slideRef} {...properties}>
-        {selectedGame
-          ? slideImages.map((each, index) => (
-              <div key={index} className={styles.slide}>
-                <img className={styles.currentImg} src={each} alt='sample' />
+        <div className={styles.slider}>
+          <Slide ref={slideRef} {...properties}>
+            {selectedGame ? slideImages.map((each, index) => (
+              <div 
+                key={index} 
+                className={styles.slide}
+              >
+                <img 
+                  className={styles.currentImg} 
+                  src={each} 
+                  alt="sample" 
+                />
               </div>
-            ))
-          : templateGame.map((each, index) => (
-              <div key={index} className={styles.slide}>
-                <img className={styles.currentImg} src={each} alt='sample' />
+            )) : templateImages.map((each, index) => (
+              <div 
+                key={index} 
+                className={styles.slide}
+              >
+                <img 
+                  className={styles.currentImg} 
+                  src={each} 
+                  alt="sample" 
+                />
               </div>
             ))}
-      </Slide>
-
-      <button
-        className={styles.backwards}
-        onClick={back}
-        id='22'
-        onMouseEnter={handleHover}
-        onMouseLeave={handleHover}
-        aria-label='Previous Picture'
-      >
-        <Left
-          className={styles.left}
-          style={{ fill: hoverState[22].hovered ? '#FFF' : '#CCC' }}
-        />
-      </button>
-      <button
-        className={styles.forward}
-        onClick={next}
-        id='23'
-        onMouseEnter={handleHover}
-        onMouseLeave={handleHover}
-        aria-label='Next Picture'
-      >
-        <Right
-          className={styles.right}
-          style={{ fill: hoverState[23].hovered ? '#fff' : '#ccc' }}
-        />
-      </button>
-      <div className={styles.selectorContainer}>
-        <button
-          id='0'
-          onClick={jumpToIndex}
-          className={
-            carouselState === 0 ? styles.buttonSelected : styles.button
-          }
-          aria-label='Jump to picture'
-        ></button>
-        <button
-          id='1'
-          onClick={jumpToIndex}
-          className={
-            carouselState === 1 ? styles.buttonSelected : styles.button
-          }
-          aria-label='Jump to picture'
-        ></button>
-        <button
-          id='2'
-          onClick={jumpToIndex}
-          className={
-            carouselState === 2 ? styles.buttonSelected : styles.button
-          }
-          aria-label='Jump to picture'
-        ></button>
-        <button
-          id='3'
-          onClick={jumpToIndex}
-          className={
-            carouselState === 3 ? styles.buttonSelected : styles.button
-          }
-          aria-label='Jump to picture'
-        ></button>
-      </div>
-    </div>
+          </Slide>
+    
+            <button 
+              className={styles.backwards} 
+              onClick={back} 
+              id="22" 
+              onMouseEnter={handleHover} 
+              onMouseLeave={handleHover} 
+              aria-label="Previous Picture"
+            >
+                <Left 
+                  className={styles.left} 
+                  style={{ fill: hoverState[22].hovered ? "#fff" : "#ccc" }}
+                />
+            </button>
+    
+            <button 
+              className={styles.forward} 
+              onClick={next} id="23" 
+              onMouseEnter={handleHover} 
+              onMouseLeave={handleHover} 
+              aria-label="Next Picture"
+            >
+                <Right
+                  className={styles.right} 
+                  style={{ fill: hoverState[23].hovered ? "#fff" : "#ccc" }}
+                />
+            </button>
+            <div className={styles.selectorContainer}>
+                <button 
+                  id="0" 
+                  onClick={jumpToIndex} 
+                  className={carouselState === 0 ? styles.buttonSelected : styles.button} 
+                  aria-label="Jump to picture"
+                >
+                </button>
+                <button 
+                  id="1" 
+                  onClick={jumpToIndex} 
+                  className={carouselState === 1 ? styles.buttonSelected : styles.button} 
+                  aria-label="Jump to picture"
+                >
+                </button>
+                <button 
+                  id="2" 
+                  onClick={jumpToIndex} 
+                  className={carouselState === 2 ? styles.buttonSelected : styles.button} 
+                  aria-label="Jump to picture"
+                >
+                </button>
+                <button 
+                  id="3" 
+                  onClick={jumpToIndex} 
+                  className={carouselState === 3 ? styles.buttonSelected : styles.button} 
+                  aria-label="Jump to picture"
+                >
+                </button>
+            </div>
+        </div>
   );
-};
+}
 
 export default Slider;
