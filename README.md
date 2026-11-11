@@ -1,70 +1,61 @@
-# Getting Started with Create React App
+# Game Store
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A game shop that runs on real Steam Store data: current prices, sales, screenshots, genres and system
+requirements for around a hundred games. It's rebuilt every morning, so the prices you see are at most a day old.
 
-## Available Scripts
+**[Open the live store](https://byocao.github.io/game-store/)**
 
-In the project directory, you can run:
+![Game Store home page](docs/home.png)
 
-### `npm start`
+## What you can do
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Browse today's sales, top sellers, new releases and upcoming games
+- Search by name, studio or genre, filter by price and genre, and sort by price, discount or Metacritic score.
+  Filters live in the URL, so any view can be bookmarked or shared
+- Open a game for its screenshots, description, features and minimum PC requirements, plus similar games
+- Keep a wishlist and a cart. Both are saved in your browser and stay in sync across tabs
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+It's a portfolio project, so checkout doesn't take payments: it sends you to each game's Steam page instead.
 
-### `npm test`
+## How it works
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```
+GitHub Actions (daily) ──> scripts/fetch-steam.mjs ──> public/data/catalog.json ──> vite build ──> GitHub Pages
+                             Steam Store API
+```
 
-### `npm run build`
+The browser never talks to Steam. Steam's store API has no CORS headers and a rate limit, so a scheduled
+workflow fetches the data once a day, writes it to a JSON file and publishes a static build. If Steam can't be
+reached, the workflow deploys the last catalog committed to the repo.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+- **Frontend:** React 19, TypeScript, React Router, plain CSS. No UI framework
+- **Build:** Vite, served from GitHub Pages
+- **Data:** Steam Store `featuredcategories` and `appdetails` endpoints, US region
+- **Quality:** ESLint, Vitest unit tests for search, filters, the cart and the Steam HTML parser
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Running it locally
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Needs Node.js 20 or newer.
 
-### `npm run eject`
+```bash
+npm install
+npm run dev          # http://localhost:5173/game-store/
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+Other scripts:
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+| Command | What it does |
+| --- | --- |
+| `npm run fetch-data` | Pull fresh data from Steam into `public/data/catalog.json` (takes about 2 minutes) |
+| `npm test` | Run the unit tests |
+| `npm run lint` | Lint the project |
+| `npm run build` | Type-check and build to `dist/` |
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## History
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+The first version (2023) was a Create React App project with 25 hard-coded games. Version 2 is a rewrite:
+live Steam data, TypeScript, Vite, a real game page, saved cart and wishlist, tests and automatic deploys.
 
-## Learn More
+---
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Not affiliated with Valve or Steam. Game names, images and descriptions belong to their owners.
